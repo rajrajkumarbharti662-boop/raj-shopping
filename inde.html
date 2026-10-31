@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAJ SHOPPING - Premium Store</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+ font-family:Arial,sans-serif;
+ background:#f5f8ff;
+ color:#142b50;
+}
+header{
+ background:#102b50;
+ color:white;
+ padding:18px 5%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:12px;
+}
+.logo{font-size:25px;font-weight:900;letter-spacing:2px}
+.logo span{color:#78b9ff}
+.header-btn{
+ border:0;background:#fff;color:#174b91;
+ padding:11px 14px;border-radius:8px;font-weight:bold;
+}
+.search{
+ width:90%;margin:20px 5%;padding:15px;
+ border:1px solid #dce5f2;border-radius:10px;
+ font-size:16px;
+}
+nav{
+ display:flex;justify-content:center;gap:25px;
+ padding:16px;background:white;flex-wrap:wrap;
+}
+nav a{text-decoration:none;color:#174b91;font-weight:bold}
+.hero{
+ margin:20px 5%;padding:40px 25px;
+ min-height:300px;border-radius:18px;color:white;
+ background:linear-gradient(120deg,#102b50,#397bd0);
+ display:flex;align-items:center;
+}
+.hero h1{font-size:38px;margin:15px 0}
+.hero p{line-height:1.7}
+.primary{
+ margin-top:20px;padding:14px 23px;border:0;
+ border-radius:7px;background:white;color:#174b91;
+ font-weight:bold;cursor:pointer;
+}
+.heading{text-align:center;margin:35px 10px 20px}
+.heading small{color:#397bd0;letter-spacing:3px}
+.heading h2{margin-top:9px}
+.categories{
+ display:grid;grid-template-columns:repeat(4,1fr);
+ gap:12px;padding:0 5%;
+}
+.category{
+ background:white;border-radius:12px;padding:20px 5px;
+ text-align:center;font-size:27px;cursor:pointer;
+ border:1px solid #e6ecf5;
+}
+.category p{font-size:13px;margin-top:10px}
+.products{
+ display:grid;grid-template-columns:repeat(2,1fr);
+ gap:14px;padding:0 5%;
+}
+.card{
+ background:white;border-radius:13px;overflow:hidden;
+ border:1px solid #e6ecf5;
+}
+.card img{width:100%;height:145px;object-fit:cover}
+.info{padding:12px}
+.info h3{font-size:15px;margin:8px 0}
+.price{color:#19754b;font-weight:bold;font-size:18px}
+.card button,.action{
+ width:100%;padding:11px;margin-top:10px;
+ border:0;border-radius:7px;background:#174b91;
+ color:white;font-weight:bold;cursor:pointer;
+}
+.wish{background:#eaf2ff!important;color:#174b91!important}
+.panel{
+ margin:25px 5%;padding:22px;background:white;
+ border-radius:12px;
+}
+.panel h2{margin-bottom:15px}
+.panel button{cursor:pointer}
+#cartItems p{padding:9px 0;border-bottom:1px solid #eee}
+.total{font-size:20px;font-weight:bold;margin-top:15px}
+footer{
+ margin-top:40px;background:#102b50;color:white;
+ padding:35px 20px;text-align:center;
+}
+footer p{margin-top:12px;color:#d1dff2}
+.hidden{display:none!important}
+.modal{
+ position:fixed;inset:0;background:#0009;
+ display:flex;align-items:center;justify-content:center;
+ padding:15px;z-index:20;
+}
+.modal-content{
+ background:white;padding:25px;border-radius:14px;
+ width:100%;max-width:380px;
+}
+.modal-content input{
+ display:block;width:100%;padding:12px;
+ margin:12px 0;border:1px solid #ccc;border-radius:7px;
+}
+.close{float:right;border:0;background:none;font-size:22px}
+@media(min-width:700px){
+ .products{grid-template-columns:repeat(4,1fr)}
+ .card img{height:210px}
+ .hero{min-height:380px;padding:55px}
+ .hero h1{font-size:52px}
+}
+@media(max-width:380px){
+ .categories{grid-template-columns:repeat(2,1fr)}
+ .hero h1{font-size:29px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">RAJ <span>SHOPPING.</span></div>
+ <div>
+  <button class="header-btn" onclick="showLogin()">Login</button>
+  <button class="header-btn" onclick="showCart()">🛒 <span id="count">0</span></button>
+ </div>
+</header>
+
+<nav>
+ <a href="#home">HOME</a>
+ <a href="#categories">CATEGORIES</a>
+ <a href="#products">PRODUCTS</a>
+ <a href="#cart">CART</a>
+</nav>
+
+<input class="search" id="search"
+placeholder="🔍 Search products..."
+oninput="filterProducts()">
+
+<section class="hero" id="home">
+ <div>
+  <small>THE PREMIUM COLLECTION</small>
+  <h1>Discover Your<br>Perfect Style.</h1>
+  <p>Explore premium products and discover a better shopping experience.</p>
+  <button class="primary" onclick="goProducts()">EXPLORE NOW →</button>
+ </div>
+</section>
+
+<div class="heading" id="categories">
+ <small>EXPLORE MORE</small>
+ <h2>Shop By Category</h2>
+</div>
+
+<section class="categories">
+ <div class="category" onclick="categoryFilter('mobile')">📱<p>Mobiles</p></div>
+ <div class="category" onclick="categoryFilter('fashion')">👕<p>Fashion</p></div>
+ <div class="category" onclick="categoryFilter('watch')">⌚<p>Watches</p></div>
+ <div class="category" onclick="categoryFilter('audio')">🎧<p>Audio</p></div>
+</section>
+
+<div class="heading" id="products">
+ <small>OUR COLLECTION</small>
+ <h2>Featured Products</h2>
+</div>
+
+<section class="products" id="productList">
+
+<div class="card" data-name="premium watch watch" data-category="watch">
+<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" alt="Watch">
+<div class="info">
+<h3>Premium Watch</h3>
+<p class="price">₹2,499</p>
+<button class="wish" onclick="addWish('Premium Watch')">♡ Wishlist</button>
+<button onclick="addCart('Premium Watch',2499)">Add to Cart</button>
+</div>
+</div>
+
+<div class="card" data-name="wireless headphones audio" data-category="audio">
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30a?w=500" alt="Headphones">
+<div class="info">
+<h3>Wireless Headphones</h3>
+<p class="price">₹1,499</p>
+<button class="wish" onclick="addWish('Wireless Headphones')">♡ Wishlist</button>
+<button onclick="addCart('Wireless Headphones',1499)">Add to Cart</button>
+</div>
+</div>
+
+<div class="card" data-name="sports shoes fashion" data-category="fashion">
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" alt="Shoes">
+<div class="info">
+<h3>Sports Shoes</h3>
+<p class="price">₹1,999</p>
+<button class="wish" onclick="addWish('Sports Shoes')">♡ Wishlist</button>
+<button onclick="addCart('Sports Shoes',1999)">Add to Cart</button>
+</div>
+</div>
+
+<div class="card" data-name="digital camera electronics" data-category="mobile">
+<img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500" alt="Camera">
+<div class="info">
+<h3>Digital Camera</h3>
+<p class="price">₹5,999</p>
+<button class="wish" onclick="addWish('Digital Camera')">♡ Wishlist</button>
+<button onclick="addCart('Digital Camera',5999)">Add to Cart</button>
+</div>
+</div>
+
+</section>
+
+<section class="panel" id="cart">
+<h2>🛒 Your Shopping Cart</h2>
+<div id="cartItems">Your cart is empty.</div>
+<div class="total" id="total">Total: ₹0</div>
+<button class="action" onclick="checkout()">Proceed to Checkout</button>
+</section>
+
+<section class="panel">
+<h2>♡ My Wishlist</h2>
+<div id="wishlist">No products saved yet.</div>
+</section>
+
+<footer>
+<h2>RAJ SHOPPING.</h2>
+<p>Your Style. Your Choice.</p>
+<p>Premium Shopping Experience</p>
+<p>© 2026 Raj Shopping</p>
+</footer>
+
+<div id="loginModal" class="modal hidden">
+<div class="modal-content">
+<button class="close" onclick="closeLogin()">×</button>
+<h2>Welcome Back!</h2>
+<input id="username" placeholder="Your Name">
+<input id="email" type="email" placeholder="Email">
+<button class="action" onclick="demoLogin()">Continue Demo</button>
+<p id="loginMessage"></p>
+</div>
+</div>
+
+<script>
+let cart=[];
+let wishlist=[];
+
+function updateCart(){
+ document.getElementById("count").textContent=
+ cart.reduce((sum,item)=>sum+item.qty,0);
+
+ let html="";
+ let total=0;
+
+ cart.forEach((item,index)=>{
+ total+=item.price*item.qty;
+ html+=`<p>${item.name} - ₹${item.price}
+ × ${item.qty}
+ <button onclick="changeQty(${index},-1)">−</button>
+ <button onclick="changeQty(${index},1)">+</button>
+ <button onclick="removeCart(${index})">Remove</button></p>`;
+ });
+
+ document.getElementById("cartItems").innerHTML=
+ html||"Your cart is empty.";
+
+ document.getElementById("total").textContent=
+ "Total: ₹"+total;
+}
+
+function addCart(name,price){
+ let item=cart.find(x=>x.name===name);
+ if(item)item.qty++;
+ else cart.push({name,price,qty:1});
+ updateCart();
+ alert(name+" added to cart!");
+}
+
+function changeQty(index,value){
+ cart[index].qty+=value;
+ if(cart[index].qty<=0)cart.splice(index,1);
+ updateCart();
+}
+
+function removeCart(index){
+ cart.splice(index,1);
+ updateCart();
+}
+
+function addWish(name){
+ if(!wishlist.includes(name))wishlist.push(name);
+ document.getElementById("wishlist").textContent=
+ wishlist.join(", ");
+}
+
+function showCart(){
+ document.getElementById("cart").scrollIntoView({behavior:"smooth"});
+}
+
+function goProducts(){
+ document.getElementById("products").scrollIntoView({behavior:"smooth"});
+}
+
+function filterProducts(){
+ let q=document.getElementById("search").value.toLowerCase();
+ document.querySelectorAll(".card").forEach(card=>{
+ card.style.display=card.dataset.name.includes(q)?"block":"none";
+ });
+}
+
+function categoryFilter(category){
+ document.getElementById("search").value=category;
+ filterProducts();
+ goProducts();
+}
+
+function showLogin(){
+ document.getElementById("loginModal").classList.remove("hidden");
+}
+
+function closeLogin(){
+ document.getElementById("loginModal").classList.add("hidden");
+}
+
+function demoLogin(){
+ let name=document.getElementById("username").value;
+ let email=document.getElementById("email").value;
+ if(!name||!email||!email.includes("@")){
+ alert("Please enter a valid name and email.");
+ return;
+ }
+ document.getElementById("loginMessage").textContent=
+ "Hello "+name+"! Demo login successful.";
+}
+
+function checkout(){
+ if(cart.length===0){
+ alert("Your cart is empty!");
+ return;
+ }
+ alert("Demo Checkout: Order total ₹"+
+ cart.reduce((sum,item)=>sum+item.price*item.qty,0)+
+ ". Real payment is not connected.");
+}
+</script>
+
+</body>
+</html>
