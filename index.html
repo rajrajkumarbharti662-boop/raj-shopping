@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAJ | Sign In</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #080808;
+  color: white;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 390px;
+  padding: 40px 25px;
+  background: #111;
+  border: 1px solid #c49a50;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 35px #c49a5030;
+}
+
+.logo {
+  font-size: 55px;
+  color: #d6ad60;
+  letter-spacing: 8px;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: #aaa;
+  margin: 15px 0 30px;
+}
+
+h2 {
+  color: #d6ad60;
+  margin-top: 20px;
+  letter-spacing: 3px;
+}
+
+input {
+  width: 100%;
+  padding: 16px;
+  margin: 10px 0;
+  background: #080808;
+  color: white;
+  border: 1px solid #665333;
+  border-radius: 5px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #d6ad60;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 20px;
+  background: #d6ad60;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+#error {
+  color: #ff7777;
+  margin-top: 15px;
+}
+
+.bottom {
+  color: #777;
+  margin-top: 30px;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+  <div class="logo">RAJ.</div>
+
+  <h2>WELCOME BACK</h2>
+
+  <p class="subtitle">
+    Sign in to enter my world
+  </p>
+
+  <form id="loginForm">
+
+    <input
+      type="text"
+      id="username"
+      placeholder="Enter Username"
+      required
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Enter Password"
+      required
+    >
+
+    <button type="submit">
+      SIGN IN →
+    </button>
+
+  </form>
+
+  <p id="error"></p>
+
+  <div class="bottom">
+    © 2026 RAJ. ALL RIGHTS RESERVED.
+  </div>
+
+</div>
+
+<script>
+document.getElementById("loginForm")
+.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  let user =
+  document.getElementById("username").value;
+
+  let pass =
+  document.getElementById("password").value;
+
+  if(user === "raj" && pass === "1234") {
+
+    window.location.href = "home.html";
+
+  } else {
+
+    document.getElementById("error")
+    .innerText = "Incorrect Username or Password";
+
+  }
+
+});
+</script>
+
+</body>
+</html>
